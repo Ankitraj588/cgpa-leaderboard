@@ -7,7 +7,7 @@ def calculate_cgpa(courses):
         credits = course.get("credits", 0) or 0
         grade_point = course.get("grade_point")
 
-        if not credits or grade_point is None
+        if not credits or grade_point is None:
             continue
 
         total_weighted_points += credits * grade_point
