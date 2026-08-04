@@ -1,0 +1,207 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<style>
+.table-container{
+  background:#1e293b;
+  padding:25px;
+  border-radius:15px;
+  border:1px solid #334155;
+}
+
+.lead-title{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+table{
+  width:100%;
+}
+
+thead{
+  background:#111827;
+  color:white;
+}
+
+thead th{
+  padding:12px;
+  text-align:center;
+}
+
+tbody td{
+  padding:10px;
+  text-align:center;
+  color:#e5e7eb;
+}
+
+tbody tr:hover{
+  background:#0f172a;
+}
+
+.rank{
+  color:#38bdf8;
+  font-weight:700;
+}
+  :root {
+    --bg-page: #0f172a;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --success: #10b981;
+    --border: #334155;
+    --input-bg: #0f172a;
+  }
+
+
+  /* Typography Accents */
+  .text-accent { color: var(--primary); font-weight: 600; }
+  .text-success { color: var(--success); font-weight: 700; font-size: 1.1rem; }
+</style>
+
+
+<h2 class="text-center mt-3 d-flex justify-content-center align-items-center gap-2">
+
+    <img src="{{ url_for('static', filename='messi-logo.png') }}"
+         alt="Logo"
+         style="height:40px; width:40px; object-fit:cover; ">
+
+    CGPA Leaderboard — NIT Jamshedpur
+</h2>
+
+
+<!-- ================= TOP PANEL ================= -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+  <!-- LEFT -->
+  <!-- LEFT -->
+<div class="d-flex gap-5 text-center fw-bold" style="font-size:1.1rem;">
+  
+  <div>
+    <div class="muted">Name</div>
+    <div class="text-accent">
+      {{ user.name }}
+    </div>
+  </div>
+
+  <div>
+    <div class="muted">Branch</div>
+    <div class="text-accent">
+      {{ user.branch if user.branch else "—" }}
+    </div>
+  </div>
+
+  <div>
+    <div class="muted">Year</div>
+    <div class="text-accent">
+      {{ user.year if user.year else "—" }}
+    </div>
+  </div>
+
+    <div>
+    <div class="muted">Your Rank</div>
+    <div class="text-accent">
+      {% if user_rank %} {{ user_rank }} {% else %} — {% endif %}
+    </div>
+  </div>
+</div>
+
+  <!-- RIGHT -->
+  <div class="d-flex gap-5 text-center fw-bold" style="font-size:1.1rem;">
+    <div>
+      <div class="muted">CGPA Page</div>
+      <div>
+        <a href="/cgpa" class="text-accent" style="text-decoration:none;">go_back→</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="muted">Logout</div>
+      <div>
+        <a href="/logout" class="text-accent" style="text-decoration:none;">Exit →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================= FILTER BAR ================= -->
+<div class="d-flex justify-content-between mb-3">
+
+  <!-- YEAR FILTER -->
+  <form method="GET">
+<select name="year" class="form-select"
+ style="width:200px;background:#111827;color:white;border:1px solid #334155;">
+  <option value="">Select Year</option>
+  {% for y in years %}
+  <option value="{{ y.year }}"
+    {% if selected_year == y.year %}selected{% endif %}>
+    {{ y.year }}
+  </option>
+  {% endfor %}
+</select>
+
+
+    <button class="btn btn-primary mt-2">Apply</button>
+  </form>
+
+
+  <!-- BRANCH FILTER -->
+  <form method="GET">
+<select name="branch" class="form-select"
+ style="width:200px;background:#111827;color:white;border:1px solid #334155;">
+  <option value="">Select Branch</option>
+  {% for b in branches %}
+  <option value="{{ b.branch }}"
+    {% if selected_branch == b.branch %}selected{% endif %}>
+    {{ b.branch }}
+  </option>
+  {% endfor %}
+</select>
+
+    <button class="btn btn-primary mt-2">Apply</button>
+  </form>
+
+</div>
+
+
+<div class="table-container">
+
+  <div class="lead-title">Leaderboard</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Reg</th>
+        <th>Year</th>
+        <th>CGPA</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ r.name }}</td>
+        <td>{{ r.reg }}</td>
+        <td>{{ r.year }}</td>
+        <td>{{ "%.2f"|format(r.cgpa|float) }}</td>
+        <td class="rank">{{ r.rank }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" style="color:gray;">No records found</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

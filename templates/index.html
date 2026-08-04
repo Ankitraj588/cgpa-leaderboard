@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="roww">
+<div style="min-height:80vh;" class="d-flex justify-content-center align-items-center">
+    
+
+    <!-- LEFT SIDE -->
+    <div class="col-md-6 d-flex justify-content-center">
+        <div class="left-box text-center">
+
+            <h3>Welcome to CGPA Leaderboard</h3>
+
+            <!-- CENTER IMAGE -->
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" 
+                 class="center-img"
+                 alt="Students">
+
+            <p class="mt-3">
+                This platform allows NIT Jamshedpur students to register, login and
+                view the CGPA leaderboard.
+            </p>
+
+            <p>
+                Create an account or login to continue.
+            </p>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE LOGIN BOX -->
+    <div class="col-md-6 d-flex justify-content-center">
+
+        <div class="main">
+
+            <input type="checkbox" id="chk" aria-hidden="true">
+
+           <div class="signup">
+  <form action="/signup" method="POST" onsubmit="return validateSignup()">
+
+
+        <label for="chk" aria-hidden="true">Sign up</label>
+
+        <input type="text" name="reg" placeholder="Registration Number" required="">
+        <input type="text" name="name" placeholder="Full Name" required="">
+        
+       <input type="password" id="password" name="password" placeholder="Password" required="">
+        <input type="password" id="confirm" name="confirm" placeholder="Re-enter Password" required="">
+
+        <p id="error" style="color: yellow; text-align:center; display:none;">
+            Passwords do not match!
+        </p>
+
+        <button>Sign up</button>
+    </form>
+</div>
+
+
+            <div class="login">
+  <form action="/login" method="POST">
+
+        <label for="chk" aria-hidden="true">Login</label>
+
+        <input type="text" name="reg" placeholder="Registration Number" required>
+        <input type="password" name="pswd" placeholder="Password" required>
+
+        <button>Login</button>
+
+        <p style="color:black; text-align:center;">
+         Forgot Password?
+        <a href="/reset">Reset Now</a>
+</p>
+
+    </form>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+</div>
+{% endblock %}
+
