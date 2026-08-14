@@ -1,3 +1,4 @@
+
 /* =========================
    GLOBAL PAGE BACKGROUND
    ========================= */
@@ -5,8 +6,8 @@ body{
 	margin: 0;
 	padding: 0;
 	font-family: 'Jost', sans-serif;
-	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-	color:white;
+	background: linear-gradient(to bottom, #000000, #1a1a1a, #333333);
+    color:white;
 }
 
 /* =========================
@@ -135,6 +136,7 @@ button:hover{
     justify-content: space-between;
     align-items: center;
     margin: 25px;
+
 }
 
 /* Fancy heading */
@@ -196,4 +198,122 @@ button:hover{
 }
 .menu:hover .menu-content{
     display: block;
+}
+
+
+/* =====================================================
+   FLASH POPUP
+   ===================================================== */
+
+.flash-container {
+    position: fixed;
+
+    bottom: 25px;
+    right: 25px;
+
+    z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    width: 320px;
+}
+
+
+.flash-popup {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background: #181818;
+
+    color: #eeeeee;
+
+    border: 1px solid #383838;
+
+    border-left: 4px solid #eeeeee;
+
+    border-radius: 10px;
+
+    padding: 14px 15px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.5);
+
+    animation: popupSlide 0.35s ease;
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+}
+
+
+.flash-icon {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50%;
+
+    background: #eeeeee;
+
+    color: #111111;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    flex-shrink: 0;
+}
+
+
+.flash-message {
+    flex: 1;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   ANIMATION
+   ===================================================== */
+
+@keyframes popupSlide {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 500px) {
+
+    .flash-container {
+        bottom: 15px;
+        right: 15px;
+        left: 15px;
+        width: auto;
+    }
+
 }

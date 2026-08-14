@@ -1,206 +1,777 @@
-
 {% extends "layout.html" %}
 
 {% block body %}
+
 <style>
-  /* 2025 Modern Dark Theme Variables */
-  :root {
-    --bg-page: #0f172a;
-    --bg-card: #1e293b;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --primary: #6366f1;
-    --primary-hover: #4f46e5;
-    --success: #10b981;
-    --border: #334155;
-    --input-bg: #0f172a;
+
+/* =====================================================
+   BLACK / GREY MODERN THEME
+   ===================================================== */
+
+:root {
+  --bg-page: #000000;
+  --bg-card: #151515;
+  --bg-card-hover: #1e1e1e;
+
+  --text-main: #f5f5f5;
+  --text-muted: #888888;
+
+  --primary: #d6d6d6;
+  --primary-hover: #ffffff;
+
+  --success: #eeeeee;
+
+  --border: #303030;
+  --border-light: #3a3a3a;
+
+  --input-bg: #0d0d0d;
+}
+
+
+/* =====================================================
+   PAGE
+   ===================================================== */
+
+body {
+  background: linear-gradient(
+    to bottom,
+    #000000,
+    #111111,
+    #1c1c1c
+  );
+
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+
+/* =====================================================
+   HEADINGS
+   ===================================================== */
+
+h2,
+h3 {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+h2 {
+  letter-spacing: 0.3px;
+}
+
+
+/* =====================================================
+   TOP PANEL
+   ===================================================== */
+
+.top-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 25px;
+  margin-bottom: 35px;
+}
+
+
+/* =====================================================
+   USER INFORMATION
+   ===================================================== */
+
+.user-info {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+
+.info-box {
+  min-width: 145px;
+
+  background: #151515;
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  padding: 14px 22px;
+
+  text-align: center;
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.35);
+
+  transition: all 0.2s ease;
+}
+
+
+.info-box:hover {
+  background: var(--bg-card-hover);
+
+  border-color: #4a4a4a;
+
+  transform: translateY(-2px);
+}
+
+
+.info-box .muted {
+  margin-bottom: 5px;
+}
+
+
+/* =====================================================
+   TEXT
+   ===================================================== */
+
+.text-accent {
+  color: #e5e5e5;
+  font-weight: 600;
+}
+
+
+.text-success {
+  color: #f1f1f1;
+
+  font-weight: 700;
+
+  font-size: 1.1rem;
+}
+
+
+.muted {
+  color: var(--text-muted);
+
+  font-size: 0.78rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+/* =====================================================
+   TOP BUTTONS
+   ===================================================== */
+
+.top-buttons {
+  display: flex;
+
+  gap: 12px;
+
+  align-items: center;
+}
+
+
+.top-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 120px;
+
+  padding: 11px 18px;
+
+  background: #202020;
+
+  border: 1px solid #3a3a3a;
+
+  border-radius: 9px;
+
+  color: #eeeeee;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  transition: all 0.2s ease;
+}
+
+
+.top-btn:hover {
+  background: #363636;
+
+  border-color: #666666;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+
+.exit-btn {
+  background: #111111;
+}
+
+
+.exit-btn:hover {
+  background: #2a2a2a;
+}
+
+
+/* =====================================================
+   FORM CONTAINER
+   ===================================================== */
+
+.cgpa-form {
+  background: #151515;
+
+  padding: 28px;
+
+  border-radius: 15px;
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+
+/* =====================================================
+   FORM LABELS
+   ===================================================== */
+
+.cgpa-form label {
+  margin-bottom: 8px;
+}
+
+
+/* =====================================================
+   INPUTS
+   ===================================================== */
+
+.form-control {
+  background-color: var(--input-bg);
+
+  border: 1px solid var(--border);
+
+  color: var(--text-main) !important;
+
+  border-radius: 9px;
+
+  padding: 13px 14px;
+
+  height: 52px;
+
+  transition: all 0.2s ease;
+}
+
+
+.form-control::placeholder {
+  color: #666666;
+}
+
+
+.form-control:hover {
+  border-color: #444444;
+}
+
+
+.form-control:focus {
+  background-color: #111111;
+
+  border-color: #666666;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.07);
+
+  color: white;
+}
+
+
+/* =====================================================
+   SAVE BUTTON
+   ===================================================== */
+
+.save-section {
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 20px;
+}
+
+
+.save-btn {
+  max-width: 180px;
+
+
+  padding: 5px 15px;
+
+  background: #e5e5e5;
+
+  border: none;
+
+  border-radius: 100px;
+
+  color: #111111;
+
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+
+.save-btn:hover {
+  background: #ffffff;
+
+  color: #000000;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 18px rgba(255, 255, 255, 0.12);
+}
+
+
+/* =====================================================
+   SECTION DIVIDER
+   ===================================================== */
+
+hr {
+  border-top: 1px solid #303030;
+
+  margin: 40px 0;
+
+  opacity: 1;
+}
+
+
+/* =====================================================
+   RECORDS
+   ===================================================== */
+
+.records {
+  display: grid;
+
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+
+/* =====================================================
+   RECORD CARD
+   ===================================================== */
+
+.record-card {
+  background: #151515;
+
+  padding: 20px 25px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border);
+
+  transition: all 0.2s ease;
+}
+
+
+.record-card:hover {
+  background: #1d1d1d;
+
+  border-color: #444444;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+/* =====================================================
+   RECORD ROW
+   ===================================================== */
+
+.record-row {
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+
+/* =====================================================
+   RECORD VALUES
+   ===================================================== */
+
+.record-row > div:not(:first-child) {
+  text-align: center;
+
+  padding-left: 20px;
+
+  border-left: 1px solid #333333;
+}
+
+
+/* =====================================================
+   EMPTY RECORD
+   ===================================================== */
+
+.empty-record {
+  border-left: none;
+
+  text-align: center;
+
+  padding: 25px;
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+  .top-panel {
+    flex-direction: column;
+
+    align-items: stretch;
   }
 
-  body {
-    background-color: var(--bg-page);
-    color: var(--text-main);
-    transition: background-color 0.3s ease;
+
+  .user-info {
+    justify-content: center;
   }
 
-  h2, h3 { color: var(--text-main); font-weight: 700; }
 
-  /* Form Container */
-  .cgpa-form {
-    background: var(--bg-card);
-    padding: 2rem;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  .top-buttons {
+    justify-content: center;
+
+    margin-top: 5px;
   }
 
-  /* Input Styling - Increased Height */
-  .form-control {
-    background-color: var(--input-bg);
-    border: 1px solid var(--border);
-    color: var(--text-main) !important;
-    border-radius: 10px;
-    padding: 1.2rem 0.8rem; /* Increased vertical padding from 0.8rem to 1.2rem */
+}
+
+
+@media (max-width: 768px) {
+
+  .info-box {
+    flex: 1;
+
+    min-width: 130px;
   }
 
-  .form-control::placeholder { color: #475569; }
-
-  .form-control:focus {
-    background-color: var(--input-bg);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-    color: #fff;
-  }
-
-  /* Button Styling */
-  .btn-primary {
-    background-color: var(--primary);
-    border: none;
-    border-radius: 10px;
-    padding: 0.9rem 2.5rem; /* Slightly increased button padding too */
-    font-weight: 600;
-    transition: all 0.2s ease;
-  }
-
-  .btn-primary:hover {
-    background-color: var(--primary-hover);
-    align-items: center;
-    align-items: center;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-  }
-  .btn-text {
-    color: var(--primary);
-    font-weight: 600;
-  }
-
-  /* Records Cards */
-  .records { display: grid; gap: 1.2rem; margin-top: 2rem; }
-
-  .record-card {
-    background: var(--bg-card);
-    padding: 2rem 1.5rem; /* Increased vertical padding from 1.5rem to 2rem */
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--primary);
-    transition: transform 0.2s ease;
-  }
-
-  .record-card:hover {
-    transform: scale(1.01);
-    background: #242f42;
-  }
 
   .record-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    grid-template-columns: 1fr;
+
+    gap: 15px;
   }
 
-  /* Typography Accents */
-  .text-accent { color: var(--primary); font-weight: 600; }
-  .text-success { color: var(--success); font-weight: 700; font-size: 1.1rem; }
-  .muted { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  hr { border-top: 1px solid var(--border); margin: 3rem 0; opacity: 0.5; }
+  .record-row > div:not(:first-child) {
+    border-left: none;
+
+    border-top: 1px solid #333333;
+
+    padding-left: 0;
+
+    padding-top: 12px;
+  }
+
+
+  .cgpa-form {
+    padding: 20px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .user-info {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    width: 100%;
+  }
+
+
+  .info-box {
+    min-width: 0;
+
+    width: 100%;
+  }
+
+
+  .top-buttons {
+    width: 100%;
+  }
+
+
+  .top-btn {
+    flex: 1;
+  }
+
+}
+
 </style>
 
 
-<h2 class="mb-4">Add Academic Data</h2>
+<!-- =====================================================
+     PAGE TITLE
+     ===================================================== -->
 
-<!-- ================= TOP PANEL ================= -->
-<div class="d-flex justify-content-between align-items-center mb-4">
-  
-  <!-- LEFT SIDE -->
-  <div class="d-flex gap-5 text-center fw-bold" style="font-size:1.1rem;">
-    <div>
-      <div class="muted">Name</div>
-      <div class="text-accent">{{ user.name }}</div>
+<h2 class="mb-4">
+  Add Academic Data
+</h2>
+
+
+<!-- =====================================================
+     TOP PANEL
+     ===================================================== -->
+
+<div class="top-panel">
+
+
+  <!-- USER INFORMATION -->
+
+  <div class="user-info">
+
+    <div class="info-box">
+
+      <div class="muted">
+        Name
+      </div>
+
+      <div class="text-accent">
+        {{ user.name }}
+      </div>
+
     </div>
 
-    <div>
-      <div class="muted">Branch</div>
-      <div class="text-accent">{{ user.branch }}</div>
+
+    <div class="info-box">
+
+      <div class="muted">
+        Branch
+      </div>
+
+      <div class="text-accent">
+        {{ user.branch if user.branch else "—" }}
+      </div>
+
     </div>
 
-    <div>
-      <div class="muted">Start Year</div>
-      <div class="text-accent">{{ user.year }}</div>
+
+    <div class="info-box">
+
+      <div class="muted">
+        Start Year
+      </div>
+
+      <div class="text-accent">
+        {{ user.year if user.year else "—" }}
+      </div>
+
     </div>
+
   </div>
 
-  <!-- RIGHT SIDE -->
-  <div class="d-flex gap-5 text-center fw-bold" style="font-size:1.1rem;">
-    <div>
-      <div class="muted">Leaderboard</div>
-      <div>
-        <a href="/leaderboard" class="text-accent" style="text-decoration:none;">Go →</a>
-      </div>
-    </div>
 
-    <div>
-      <div class="muted">Logout</div>
-      <div>
-        <a href="/logout" class="text-accent" style="text-decoration:none;">Exit →</a>
-      </div>
-    </div>
+  <!-- NAVIGATION BUTTONS -->
+
+  <div class="top-buttons">
+
+    <a
+      href="/leaderboard"
+      class="top-btn"
+    >
+      Leaderboard →
+    </a>
+
+
+    <a
+      href="/logout"
+      class="top-btn exit-btn"
+    >
+      Exit →
+    </a>
+
   </div>
 
 </div>
 
 
-
-
-
-
-
-
+<!-- =====================================================
+     ADD ACADEMIC DATA FORM
+     ===================================================== -->
 
 <form method="POST" class="cgpa-form">
-  <div class="row g-3">
+
+  <div class="row g-3 w-100 border-bottom pb-3 mb-3">
+
+
+    <!-- SEMESTER -->
+
     <div class="col-md-4">
-      <label class="muted mb-1 d-block">Semester Name</label>
-      <input class="form-control" type="text" name="semester" placeholder="e.g., Semester 1" required>
+
+      <label class="muted d-block">
+        Semester Name
+      </label>
+
+      <input
+        class="form-control"
+        type="text"
+        name="semester"
+        placeholder="e.g., Semester 1"
+        required
+      >
+
     </div>
+
+
+    <!-- SGPA -->
+
     <div class="col-md-4">
-      <label class="muted mb-1 d-block">SGPA</label>
-      <input class="form-control" type="number" step="0.01" name="sgpa" placeholder="0.00" required>
+
+      <label class="muted d-block">
+        SGPA
+      </label>
+
+      <input
+        class="form-control"
+        type="number"
+        step="0.01"
+        name="sgpa"
+        placeholder="0.00"
+        required
+      >
+
     </div>
+
+
+    <!-- CGPA -->
+
     <div class="col-md-4">
-      <label class="muted mb-1 d-block">Cumulative CGPA</label>
-      <input class="form-control" type="number" step="0.01" name="cgpa" placeholder="0.00" required>
+
+      <label class="muted d-block">
+        Cumulative CGPA
+      </label>
+
+      <input
+        class="form-control"
+        type="number"
+        step="0.01"
+        name="cgpa"
+        placeholder="0.00"
+        required
+      >
+
     </div>
+
   </div>
-  <div class="mt-4 d-flex "> 
-  <button type="submit" class="btn btn-primary  btn-txt btn-lg">Save Entry</button>
-</div>
+
+
+  <!-- SAVE BUTTON -->
+
+  <div class="save-section ">
+
+    <button
+      type="submit"
+      class="save-btn"
+    >
+      Save Entry
+    </button>
+
+  </div>
+
 </form>
+
+
+<!-- =====================================================
+     ACADEMIC HISTORY
+     ===================================================== -->
 
 <hr>
 
-<h3 class="mt-4 mb-3">Academic History</h3>
+
+<h3 class="mt-4 mb-3">
+  Academic History
+</h3>
+
 
 <div class="records">
+
 {% for row in data %}
+
   <div class="record-card">
+
     <div class="record-row">
+
+
+      <!-- SEMESTER -->
+
       <div>
-        <div class="muted">Semester_</div>
-        <div class="text-accent">{{ row.semester }}</div>
+
+        <div class="muted">
+          Semester
+        </div>
+
+        <div class="text-accent">
+          {{ row.semester }}
+        </div>
+
       </div>
+
+
+      <!-- SGPA -->
+
       <div>
-        <div class="muted">SGPA</div>
-        <div class="text-success">{{ row.sgpa }}</div>
+
+        <div class="muted">
+          SGPA
+        </div>
+
+        <div class="text-success">
+          {{ row.sgpa }}
+        </div>
+
       </div>
+
+
+      <!-- CGPA -->
+
       <div>
-        <div class="muted">CGPA</div>
-        <div class="text-success">{{ row.cgpa }}</div>
+
+        <div class="muted">
+          CGPA
+        </div>
+
+        <div class="text-success">
+          {{ row.cgpa }}
+        </div>
+
       </div>
+
+
     </div>
+
   </div>
+
+
 {% else %}
-  <div class="record-card text-center" style="border-left: none;">
-    <span class="muted">No records found. Data you add will appear here.</span>
+
+  <div class="record-card empty-record">
+
+    <span class="muted">
+      No records found. Data you add will appear here.
+    </span>
+
   </div>
+
 {% endfor %}
+
 </div>
+
+
 {% endblock %}

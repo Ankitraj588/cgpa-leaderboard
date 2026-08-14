@@ -1,207 +1,465 @@
-{% extends "layout.html" %}
-{% block body %}
+{% extends "layout.html" %} 
+{% block body %} 
+ 
+<style> 
 
-<style>
-.table-container{
-  background:#1e293b;
-  padding:25px;
-  border-radius:15px;
-  border:1px solid #334155;
+/* =========================
+   BLACK / GREY THEME
+   ========================= */
+
+.table-container{ 
+  background:#1a1a1a; 
+  padding:25px; 
+  border-radius:15px; 
+  border:1px solid #333333; 
+} 
+ 
+.lead-title{ 
+  font-size:28px; 
+  font-weight:700; 
+  margin-bottom:15px; 
+} 
+ 
+table{ 
+  width:100%; 
+  border-collapse:collapse;
+} 
+ 
+thead{ 
+  background:#0d0d0d; 
+  color:white; 
+} 
+ 
+thead th{ 
+  padding:12px; 
+  text-align:center; 
+} 
+ 
+tbody td{ 
+  padding:10px; 
+  text-align:center; 
+  color:#e5e5e5; 
+  border-bottom:1px solid #292929;
+} 
+ 
+tbody tr:hover{ 
+  background:#292929; 
+} 
+ 
+.rank{ 
+  color:#d1d1d1; 
+  font-weight:700; 
+} 
+
+
+:root { 
+  --bg-page: #000000; 
+  --bg-card: #1a1a1a; 
+  --text-main: #f5f5f5; 
+  --text-muted: #999999; 
+  --primary: #d1d1d1; 
+  --primary-hover: #ffffff; 
+  --success: #d1d1d1; 
+  --border: #333333; 
+  --input-bg: #111111; 
+} 
+
+
+/* Typography Accents */
+
+.text-accent { 
+  color: var(--primary); 
+  font-weight:600; 
+} 
+
+.text-success { 
+  color:var(--success); 
+  font-weight:700; 
+  font-size:1.1rem; 
+} 
+
+
+.muted {
+  color:#888888;
 }
 
-.lead-title{
-  font-size:28px;
-  font-weight:700;
-  margin-bottom:15px;
+
+/* =========================
+   TOP PANEL
+   ========================= */
+
+.top-panel {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:30px;
 }
 
-table{
-  width:100%;
+
+/* =========================
+   USER INFO
+   ========================= */
+
+.user-info {
+  display:flex;
+  gap:15px;
 }
 
-thead{
-  background:#111827;
+.info-box {
+  background:#1a1a1a;
+  border:1px solid #333333;
+  border-radius:10px;
+  padding:12px 22px;
+  min-width:120px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+
+.info-box .muted {
+  color:#888888;
+  font-size:0.85rem;
+  margin-bottom:4px;
+}
+
+.info-box .text-accent {
+  color:#e5e5e5;
+}
+
+
+/* =========================
+   TOP BUTTONS
+   ========================= */
+
+.top-buttons {
+  display:flex;
+  gap:12px;
+}
+
+.top-btn {
+  padding:11px 20px;
+  background:#222222;
+  border:1px solid #444444;
+  border-radius:8px;
+  color:#eeeeee;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.2s ease;
+}
+
+.top-btn:hover {
+  background:#3a3a3a;
+  border-color:#666666;
   color:white;
 }
 
-thead th{
-  padding:12px;
-  text-align:center;
+.exit-btn {
+  background:#151515;
 }
 
-tbody td{
-  padding:10px;
-  text-align:center;
-  color:#e5e7eb;
+
+/* =========================
+   FILTERS
+   ========================= */
+
+.form-select {
+  background:#111111 !important;
+  color:white !important;
+  border:1px solid #333333 !important;
 }
 
-tbody tr:hover{
-  background:#0f172a;
+.form-select:focus {
+  background:#111111 !important;
+  color:white !important;
+  border-color:#666666 !important;
+  box-shadow:0 0 0 0.15rem rgba(255,255,255,0.08);
 }
 
-.rank{
-  color:#38bdf8;
-  font-weight:700;
+.form-select option {
+  background:#111111;
+  color:white;
 }
-  :root {
-    --bg-page: #0f172a;
-    --bg-card: #1e293b;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --primary: #6366f1;
-    --primary-hover: #4f46e5;
-    --success: #10b981;
-    --border: #334155;
-    --input-bg: #0f172a;
+
+
+/* =========================
+   APPLY BUTTON
+   ========================= */
+
+.btn-primary {
+  background:#333333;
+  border:1px solid #444444;
+  color:white;
+}
+
+.btn-primary:hover {
+  background:#555555;
+  border-color:#666666;
+  color:white;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 900px) {
+
+  .top-panel {
+    flex-direction:column;
+    align-items:stretch;
   }
 
+  .user-info {
+    flex-wrap:wrap;
+  }
 
-  /* Typography Accents */
-  .text-accent { color: var(--primary); font-weight: 600; }
-  .text-success { color: var(--success); font-weight: 700; font-size: 1.1rem; }
-</style>
+  .top-buttons {
+    justify-content:center;
+  }
 
+}
 
-<h2 class="text-center mt-3 d-flex justify-content-center align-items-center gap-2">
-
-    <img src="{{ url_for('static', filename='messi-logo.png') }}"
-         alt="Logo"
-         style="height:40px; width:40px; object-fit:cover; ">
-
-    CGPA Leaderboard — NIT Jamshedpur
-</h2>
+</style> 
 
 
-<!-- ================= TOP PANEL ================= -->
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- =========================
+     PAGE TITLE
+     ========================= -->
 
-  <!-- LEFT -->
-  <!-- LEFT -->
-<div class="d-flex gap-5 text-center fw-bold" style="font-size:1.1rem;">
-  
-  <div>
-    <div class="muted">Name</div>
-    <div class="text-accent">
-      {{ user.name }}
-    </div>
-  </div>
+<h2 class="text-center mt-10 d-flex justify-content-center align-items-center gap-5"> 
+ 
+    <img src="{{ url_for('static', filename='messi-logo.png') }}" 
+         alt="Logo" 
+         style="height:40px; width:40px; object-fit:cover;"> 
+ 
+    CGPA     Leaderboard    —     NIT      Jamshedpur 
 
-  <div>
-    <div class="muted">Branch</div>
-    <div class="text-accent">
-      {{ user.branch if user.branch else "—" }}
-    </div>
-  </div>
+</h2> 
 
-  <div>
-    <div class="muted">Year</div>
-    <div class="text-accent">
-      {{ user.year if user.year else "—" }}
-    </div>
-  </div>
 
-    <div>
-    <div class="muted">Your Rank</div>
-    <div class="text-accent">
-      {% if user_rank %} {{ user_rank }} {% else %} — {% endif %}
-    </div>
-  </div>
-</div>
+<!-- =========================
+     TOP PANEL
+     ========================= -->
 
-  <!-- RIGHT -->
-  <div class="d-flex gap-5 text-center fw-bold" style="font-size:1.1rem;">
-    <div>
-      <div class="muted">CGPA Page</div>
-      <div>
-        <a href="/cgpa" class="text-accent" style="text-decoration:none;">go_back→</a>
+<div class="top-panel">
+
+  <!-- USER INFORMATION -->
+
+  <div class="user-info">
+
+    <div class="info-box">
+      <div class="muted">Name</div>
+
+      <div class="text-accent">
+        {{ user.name }}
       </div>
     </div>
 
-    <div>
-      <div class="muted">Logout</div>
-      <div>
-        <a href="/logout" class="text-accent" style="text-decoration:none;">Exit →</a>
+
+    <div class="info-box">
+      <div class="muted">Branch</div>
+
+      <div class="text-accent">
+        {{ user.branch if user.branch else "—" }}
       </div>
     </div>
+
+
+    <div class="info-box">
+      <div class="muted">Year</div>
+
+      <div class="text-accent">
+        {{ user.year if user.year else "—" }}
+      </div>
+    </div>
+
+
+    <div class="info-box">
+      <div class="muted">Your Rank</div>
+
+      <div class="text-accent">
+        {% if user_rank %}
+          {{ user_rank }}
+        {% else %}
+          —
+        {% endif %}
+      </div>
+    </div>
+
   </div>
 
-</div>
+
+  <!-- BUTTONS -->
+
+  <div class="top-buttons">
+
+    <a href="/cgpa" class="top-btn">
+      ← Go Back
+    </a>
+
+    <a href="/logout" class="top-btn exit-btn">
+      Exit →
+    </a>
+
+  </div>
+
+</div> 
 
 
-<!-- ================= FILTER BAR ================= -->
-<div class="d-flex justify-content-between mb-3">
+<!-- =========================
+     FILTER BAR
+     ========================= -->
+
+<div class="d-flex justify-content-between mb-3"> 
+
 
   <!-- YEAR FILTER -->
-  <form method="GET">
-<select name="year" class="form-select"
- style="width:200px;background:#111827;color:white;border:1px solid #334155;">
-  <option value="">Select Year</option>
-  {% for y in years %}
-  <option value="{{ y.year }}"
-    {% if selected_year == y.year %}selected{% endif %}>
-    {{ y.year }}
-  </option>
-  {% endfor %}
-</select>
+
+  <form method="GET"> 
+
+    <select name="year" 
+            class="form-select" 
+            style="width:200px;">
+
+      <option value="">
+        Select Year
+      </option>
+
+      {% for y in years %}
+
+      <option value="{{ y.year }}"
+        {% if selected_year == y.year %}
+          selected
+        {% endif %}>
+
+        {{ y.year }}
+
+      </option>
+
+      {% endfor %}
+
+    </select> 
 
 
-    <button class="btn btn-primary mt-2">Apply</button>
-  </form>
+    <button class="btn btn-primary mt-2">
+      Apply
+    </button> 
+
+  </form> 
 
 
   <!-- BRANCH FILTER -->
-  <form method="GET">
-<select name="branch" class="form-select"
- style="width:200px;background:#111827;color:white;border:1px solid #334155;">
-  <option value="">Select Branch</option>
-  {% for b in branches %}
-  <option value="{{ b.branch }}"
-    {% if selected_branch == b.branch %}selected{% endif %}>
-    {{ b.branch }}
-  </option>
-  {% endfor %}
-</select>
 
-    <button class="btn btn-primary mt-2">Apply</button>
-  </form>
+  <form method="GET"> 
 
-</div>
+    <select name="branch" 
+            class="form-select" 
+            style="width:200px;">
 
+      <option value="">
+        Select Branch
+      </option>
 
-<div class="table-container">
+      {% for b in branches %}
 
-  <div class="lead-title">Leaderboard</div>
+      <option value="{{ b.branch }}"
+        {% if selected_branch == b.branch %}
+          selected
+        {% endif %}>
 
-  <table>
-    <thead>
-      <tr>
-        <th>S.No</th>
-        <th>Name</th>
-        <th>Reg</th>
-        <th>Year</th>
-        <th>CGPA</th>
-        <th>Rank</th>
-      </tr>
-    </thead>
+        {{ b.branch }}
 
-    <tbody>
-      {% for r in rows %}
-      <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ r.name }}</td>
-        <td>{{ r.reg }}</td>
-        <td>{{ r.year }}</td>
-        <td>{{ "%.2f"|format(r.cgpa|float) }}</td>
-        <td class="rank">{{ r.rank }}</td>
-      </tr>
-      {% else %}
-      <tr>
-        <td colspan="6" style="color:gray;">No records found</td>
-      </tr>
+      </option>
+
       {% endfor %}
-    </tbody>
-  </table>
 
-</div>
+    </select> 
 
+
+    <button class="btn btn-primary mt-2">
+      Apply
+    </button> 
+
+  </form> 
+
+</div> 
+
+
+<!-- =========================
+     LEADERBOARD
+     ========================= -->
+
+<div class="table-container"> 
+
+  <div class="lead-title">
+    Leaderboard
+  </div> 
+
+
+  <table> 
+
+    <thead> 
+
+      <tr> 
+        <th>S.No</th> 
+        <th>Name</th> 
+        <th>Reg</th> 
+        <th>Year</th> 
+        <th>CGPA</th> 
+        <th>Rank</th> 
+      </tr> 
+
+    </thead> 
+
+
+    <tbody> 
+
+      {% for r in rows %}
+
+      <tr> 
+
+        <td>
+          {{ loop.index }}
+        </td> 
+
+        <td>
+          {{ r.name }}
+        </td> 
+
+        <td>
+          {{ r.reg }}
+        </td> 
+
+        <td>
+          {{ r.year }}
+        </td> 
+
+        <td>
+          {{ "%.2f"|format(r.cgpa|float) }}
+        </td> 
+
+        <td class="rank">
+          {{ r.rank }}
+        </td> 
+
+      </tr> 
+
+      {% else %}
+
+      <tr> 
+
+        <td colspan="6" style="color:gray;">
+          No records found
+        </td> 
+
+      </tr> 
+
+      {% endfor %}
+
+    </tbody> 
+
+  </table> 
+
+</div> 
+ 
 {% endblock %}
