@@ -1,0 +1,1 @@
+from app.leaderboard.logic import filter_leaderboard  # noqa: F401

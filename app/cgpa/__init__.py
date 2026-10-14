@@ -1,0 +1,1 @@
+from app.cgpa.logic import calculate_cgpa  # noqa: F401

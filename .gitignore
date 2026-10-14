@@ -4,3 +4,4 @@ flask_session/
 *.pyc
 .vercel
 # .cgpa.db
+authh.py
