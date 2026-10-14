@@ -1,9 +1,16 @@
 """Flask application package."""
 
-from flask import Flask, render_template, redirect, request, session, flash
-from flask_session import Session
-from cs50 import SQL
+from flask import Flask, render_template, redirect, request, flash, g, make_response
+from config import Config
+# from cs50 import SQL
+from app.extensions import db
+from app.utils import parse_reg
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.auth.jwt_utils import create_access_token, create_refresh_token
+from app.auth.middleware import (
+    set_auth_cookies, clear_auth_cookies,
+    load_current_user, persist_refreshed_token, jwt_required,
+)
 
 app = Flask(
     __name__,
@@ -11,36 +18,48 @@ app = Flask(
     static_folder="../static"
 )
 
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
-db = SQL("sqlite:///cgpa.db")
+Config.validate()
+app.config.from_object(Config)
 
+app.before_request(load_current_user)
+app.after_request(persist_refreshed_token)
 
-def parse_reg(reg):
-    reg = reg.lower().strip()
+# app.config["SECRET_KEY"] = os.environ.get(
+#     "SECRET_KEY",
+#     "dev-secret-key"
+# )
 
-    year = reg[:4]                  # 2023
-    program = reg[4:6]              # ug
-    branch = reg[6:8]               # me
-    roll = reg[8:]
+# app.config["SESSION_PERMANENT"] = False
+# app.config["SESSION_TYPE"] = "filesystem"
 
-    program_full = {
-        "ug": "Undergraduate",
-        "pg": "Postgraduate"
-    }.get(program, "Unknown")
+# Session(app)
 
-    branch_full = {
-        "cs": "Computer Science",
-        "it": "Information Technology",
-        "me": "Mechanical",
-        "ce": "Civil",
-        "ec": "Electronics",
-        "ee": "Electrical"
-    }.get(branch, "Unknown")
+# db = SQL("sqlite:///cgpa.db")
 
-    return year, program_full, branch_full, roll
+# def parse_reg(reg):
+#     reg = reg.lower().strip()
+
+#     year = reg[:4]                  # 2023
+#     program = reg[4:6]              # ug
+#     branch = reg[6:8]               # me
+#     roll = reg[8:]
+
+#     program_full = {
+#         "ug": "Undergraduate",
+#         "pg": "Postgraduate"
+#     }.get(program, "Unknown")
+
+#     branch_full = {
+#         "cs": "Computer Science",
+#         "it": "Information Technology",
+#         "me": "Mechanical",
+#         "ce": "Civil",
+#         "ec": "Electronics",
+#         "ee": "Electrical"
+#     }.get(branch, "Unknown")
+
+#     return year, program_full, branch_full, roll
 
 
 # ---------------- HOME ----------------
@@ -73,8 +92,9 @@ def signup():
         reg, name, hash_pass, year, program, branch, roll
     )
 
-    session["user"] = reg
-    return redirect("/cgpa")
+    resp = make_response(redirect("/cgpa"))
+    set_auth_cookies(resp, create_access_token(reg), create_refresh_token(reg))
+    return resp
 
 
 # ---------------- LOGIN ----------------
@@ -93,9 +113,10 @@ def login():
         flash("Incorrect Password ❌ | Reset BRO")
         return redirect("/")
 
-    session["user"] = reg
     flash("Login Successful 🎯")
-    return redirect("/cgpa")
+    resp = make_response(redirect("/cgpa"))
+    set_auth_cookies(resp, create_access_token(reg), create_refresh_token(reg))
+    return resp
 
 
 # ---------------- RESET PASSWORD ----------------
@@ -125,9 +146,10 @@ def reset():
 
 # ---------------- CGPA PAGE ----------------
 @app.route("/cgpa", methods=["GET", "POST"])
+@jwt_required
 def cgpa():
-    if "user" not in session:
-        return redirect("/")
+    # - if "user" not in session:
+    # -     return redirect("/")
 
     if request.method == "POST":
         semester = request.form.get("semester").strip().lower()
@@ -136,30 +158,30 @@ def cgpa():
 
         existing = db.execute(
             "SELECT * FROM results WHERE reg = ? AND lower(trim(semester)) = ?",
-            session["user"], semester
+            g.user, semester
         )
 
         if existing:
             db.execute(
                 "UPDATE results SET sgpa = ?, cgpa = ? WHERE reg = ? AND lower(trim(semester)) = ?",
-                sgpa, cgpa_value, session["user"], semester
+                sgpa, cgpa_value, g.user, semester
             )
             flash("Updated Successfully 👍")
         else:
             db.execute(
                 "INSERT INTO results (reg, semester, sgpa, cgpa) VALUES (?, ?, ?, ?)",
-                session["user"], semester, sgpa, cgpa_value
+                g.user, semester, sgpa, cgpa_value
             )
             flash("Added Successfully 🎯")
 
     data = db.execute(
         "SELECT semester, sgpa, cgpa FROM results WHERE reg = ? ORDER BY semester",
-        session["user"]
+        g.user
     )
 
     user = db.execute(
         "SELECT name, branch, year FROM users WHERE reg = ?",
-        session["user"]
+        g.user
     )[0]
 
     return render_template("cgpa.html", data=data, user=user)
@@ -167,9 +189,10 @@ def cgpa():
 
 # leaderboard
 @app.route("/leaderboard")
+@jwt_required
 def leaderboard():
-    if "user" not in session:
-        return redirect("/")
+    # - if "user" not in session:
+    # -     return redirect("/")
 
     year = request.args.get("year")
     branch = request.args.get("branch")
@@ -208,7 +231,7 @@ def leaderboard():
             current_rank = rank
         row["rank"] = current_rank
 
-        if row["reg"] == session["user"]:
+        if row["reg"] == g.user:
             user_rank = current_rank
 
         prev = row["cgpa"]
@@ -216,7 +239,7 @@ def leaderboard():
 
     user = db.execute(
         "SELECT name, branch, year FROM users WHERE reg = ?",
-        session["user"]
+        g.user
     )[0]
 
     years = db.execute("SELECT DISTINCT year FROM users WHERE year IS NOT NULL ORDER BY year ASC")
@@ -237,5 +260,8 @@ def leaderboard():
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
 def logout():
-    session.clear()
-    return redirect("/")
+# -    session.clear()
+# -    return redirect("/")
+    resp = make_response(redirect("/"))
+    clear_auth_cookies(resp)
+    return resp

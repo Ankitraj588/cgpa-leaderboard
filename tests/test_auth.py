@@ -1,6 +1,6 @@
 import pytest
 # Replace 'app.auth' and 'login_user' with your actual module and function names
-from app.auth import login_user
+from app.authh import login_user
 
 @pytest.mark.parametrize("username, password, expected_status", [
     ("valid_user", "correct_pass", 200),
