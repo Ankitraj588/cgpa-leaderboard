@@ -22,3 +22,10 @@ function validateSignup(){
   error.style.display = "none";
   return true;
 }
+
+
+// ================= Scroll to the logged-in user's row =================
+document.addEventListener("DOMContentLoaded", () => {
+  const me = document.querySelector("tr.me");
+  if (me) me.scrollIntoView({ block: "center", behavior: "smooth" });
+});

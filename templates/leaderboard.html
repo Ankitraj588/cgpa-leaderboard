@@ -1,7 +1,7 @@
 {% extends "layout.html" %} 
 {% block body %} 
  
-<style> 
+<!-- <style> 
 
 /* =========================
    BLACK / GREY THEME
@@ -219,7 +219,7 @@ tbody tr:hover{
 
 }
 
-</style> 
+</style>  -->
 
 
 <!-- =========================
@@ -310,79 +310,23 @@ tbody tr:hover{
      FILTER BAR
      ========================= -->
 
-<div class="d-flex justify-content-between mb-3"> 
+<form method="GET" class="filter-bar">
+  <select name="year" class="form-select">
+    <option value="">All Years</option>
+    {% for y in years %}
+    <option value="{{ y.year }}" {% if selected_year == y.year %}selected{% endif %}>{{ y.year }}</option>
+    {% endfor %}
+  </select>
 
+  <select name="branch" class="form-select">
+    <option value="">All Branches</option>
+    {% for b in branches %}
+    <option value="{{ b.branch }}" {% if selected_branch == b.branch %}selected{% endif %}>{{ b.branch }}</option>
+    {% endfor %}
+  </select>
 
-  <!-- YEAR FILTER -->
-
-  <form method="GET"> 
-
-    <select name="year" 
-            class="form-select" 
-            style="width:200px;">
-
-      <option value="">
-        Select Year
-      </option>
-
-      {% for y in years %}
-
-      <option value="{{ y.year }}"
-        {% if selected_year == y.year %}
-          selected
-        {% endif %}>
-
-        {{ y.year }}
-
-      </option>
-
-      {% endfor %}
-
-    </select> 
-
-
-    <button class="btn btn-primary mt-2">
-      Apply
-    </button> 
-
-  </form> 
-
-
-  <!-- BRANCH FILTER -->
-
-  <form method="GET"> 
-
-    <select name="branch" 
-            class="form-select" 
-            style="width:200px;">
-
-      <option value="">
-        Select Branch
-      </option>
-
-      {% for b in branches %}
-
-      <option value="{{ b.branch }}"
-        {% if selected_branch == b.branch %}
-          selected
-        {% endif %}>
-
-        {{ b.branch }}
-
-      </option>
-
-      {% endfor %}
-
-    </select> 
-
-
-    <button class="btn btn-primary mt-2">
-      Apply
-    </button> 
-
-  </form> 
-
-</div> 
+  <button class="btn btn-primary">Apply</button>
+</form>
 
 
 <!-- =========================
@@ -398,65 +342,36 @@ tbody tr:hover{
 
   <table> 
 
-    <thead> 
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Reg</th>
+        <th>Year</th>
+        <th>CGPA</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
 
-      <tr> 
-        <th>S.No</th> 
-        <th>Name</th> 
-        <th>Reg</th> 
-        <th>Year</th> 
-        <th>CGPA</th> 
-        <th>Rank</th> 
-      </tr> 
-
-    </thead> 
-
-
-    <tbody> 
-
+    <tbody>
       {% for r in rows %}
-
-      <tr> 
-
-        <td>
-          {{ loop.index }}
-        </td> 
-
+      <tr class="{{ 'me' if r.reg == g.user else '' }}">
+        <td>{{ loop.index }}</td>
         <td>
           {{ r.name }}
-        </td> 
-
-        <td>
-          {{ r.reg }}
-        </td> 
-
-        <td>
-          {{ r.year }}
-        </td> 
-
-        <td>
-          {{ "%.2f"|format(r.cgpa|float) }}
-        </td> 
-
-        <td class="rank">
-          {{ r.rank }}
-        </td> 
-
-      </tr> 
-
+          {% if r.reg == g.user %}<span class="you-badge">You</span>{% endif %}
+        </td>
+        <td>{{ r.reg }}</td>
+        <td>{{ r.year }}</td>
+        <td>{{ "%.2f"|format(r.cgpa|float) }}</td>
+        <td class="rank">{{ r.rank }}</td>
+      </tr>
       {% else %}
-
-      <tr> 
-
-        <td colspan="6" style="color:gray;">
-          No records found
-        </td> 
-
-      </tr> 
-
+      <tr>
+        <td colspan="6" style="color:gray;">No records found</td>
+      </tr>
       {% endfor %}
-
-    </tbody> 
+    </tbody>
 
   </table> 
 

@@ -5,3 +5,4 @@ flask_session/
 .vercel
 # .cgpa.db
 authh.py
+seed_100_fake_data.py
