@@ -6,3 +6,4 @@ flask_session/
 # .cgpa.db
 authh.py
 seed_100_fake_data.py
+# .env
