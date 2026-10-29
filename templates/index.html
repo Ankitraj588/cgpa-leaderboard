@@ -3,7 +3,6 @@
 {% block body %}
 <div class="auth-wrap">
 
-  <!-- Intro -->
   <div class="left-box">
     <h3>CGPA Leaderboard</h3>
     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"
@@ -11,7 +10,6 @@
     <p>Register, log in and see where you stand among NIT Jamshedpur students.</p>
   </div>
 
-  <!-- Login / Signup card -->
   <div class="auth-card">
     <input type="radio" name="auth-tab" id="tab-login" checked>
     <input type="radio" name="auth-tab" id="tab-signup">
@@ -22,16 +20,16 @@
     </div>
 
     <form class="form-login" action="/login" method="POST">
-      <input type="text" name="reg" placeholder="Registration Number" autocomplete="username" required>
+      <input type="text" name="email" inputmode="email" placeholder="College email ID" autocomplete="username" required>
       <input type="password" name="pswd" placeholder="Password" autocomplete="current-password" required>
       <button type="submit">Log in</button>
-      <p class="auth-note">Forgot password? <a href="/reset">Reset now</a></p>
+      <p class="auth-note">Forgot password? <a href="/forgot">Reset now</a></p>
     </form>
 
     <form class="form-signup" action="/signup" method="POST" onsubmit="return validateSignup()">
-      <input type="text" name="reg" placeholder="Registration Number" autocomplete="username" required>
+      <input type="text" name="email" inputmode="email" placeholder="College email ID" autocomplete="username" required>
       <input type="text" name="name" placeholder="Full Name" autocomplete="name" required>
-      <input type="password" id="password" name="password" placeholder="Password" autocomplete="new-password" required>
+      <input type="password" id="password" name="password" placeholder="Password" autocomplete="new-password" minlength="8" required>
       <input type="password" id="confirm" name="confirm" placeholder="Re-enter Password" autocomplete="new-password" required>
       <p id="error" class="auth-error" style="display:none;">Passwords do not match!</p>
       <button type="submit">Sign up</button>

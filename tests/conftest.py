@@ -1,14 +1,13 @@
 import os
 import tempfile
 
-# These must be set before `app` is imported anywhere.
-os.environ.setdefault("SECRET_KEY", "test-secret-key")
-os.environ.setdefault("JWT_SECRET_KEY", "test-jwt-secret-key")
-
-# cs50's SQL needs the sqlite file to already exist on disk.
 _tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
 _tmp.close()
-os.environ.setdefault("DATABASE_URL", f"sqlite:///{_tmp.name}")
+
+# Forced on purpose: tests must never touch a real database
+os.environ["SECRET_KEY"] = "test-secret-key"
+os.environ["JWT_SECRET_KEY"] = "test-jwt-secret-key"
+os.environ["DATABASE_URL"] = f"sqlite:///{_tmp.name}"
 
 import pytest
 from app import app as flask_app

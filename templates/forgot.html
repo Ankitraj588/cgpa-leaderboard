@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="card form-card p-4 mt-4 mx-auto text-center">
+  <h3>Forgot password</h3>
+  <p class="text-light">Enter your college email and we will send you a reset link</p>
+  <form method="POST">
+    <input type="text" name="email" inputmode="email" class="form-control mb-3"
+           placeholder="College email ID" autocomplete="username" required>
+    <button class="btn btn-primary w-100">Send reset link</button>
+  </form>
+  <p class="auth-note mt-3"><a href="/">Back to login</a></p>
+</div>
+{% endblock %}

@@ -3,7 +3,8 @@ from datetime import timedelta
 from flask import g
 
 from app.auth.jwt_utils import (
-    create_access_token, create_refresh_token, decode_token, TokenError,
+    create_access_token, create_refresh_token, create_reset_token,
+    read_reset_token, decode_token, password_fingerprint, TokenError,
 )
 from app.auth.middleware import load_current_user
 
@@ -46,6 +47,38 @@ def test_expired_token_rejected(app, monkeypatch):
         token = create_access_token("x")
         with pytest.raises(TokenError):
             decode_token(token, "access")
+
+
+def test_reset_token_round_trip(app):
+    password_hash = "stored-password-hash"
+    with app.app_context():
+        token = create_reset_token("2023ugcs104", password_hash)
+        reg, fingerprint = read_reset_token(token)
+
+    assert reg == "2023ugcs104"
+    assert fingerprint == password_fingerprint(password_hash)
+
+
+def test_reset_token_cannot_be_used_as_access_token(app):
+    with app.app_context():
+        token = create_reset_token("2023ugcs104", "stored-password-hash")
+        with pytest.raises(TokenError):
+            decode_token(token, "access")
+
+
+def test_access_token_cannot_be_used_as_reset_token(app):
+    with app.app_context():
+        token = create_access_token("2023ugcs104")
+        with pytest.raises(TokenError):
+            read_reset_token(token)
+
+
+def test_expired_reset_token_rejected(app, monkeypatch):
+    monkeypatch.setitem(app.config, "RESET_TOKEN_EXPIRES", timedelta(seconds=-1))
+    with app.app_context():
+        token = create_reset_token("2023ugcs104", "stored-password-hash")
+        with pytest.raises(TokenError):
+            read_reset_token(token)
 
 
 # ---------- middleware: who is this request? ----------

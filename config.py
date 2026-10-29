@@ -10,6 +10,13 @@ class Config:
     JWT_ALGORITHM = "HS256"
     ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     REFRESH_TOKEN_EXPIRES = timedelta(days=7)
+    RESET_TOKEN_EXPIRES = timedelta(minutes=15)
+
+    MAIL_SERVER = "smtp.gmail.com"
+    MAIL_PORT = int(os.environ.get("MAIL_PORT", 465))
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
 
     ACCESS_COOKIE_NAME = "access_token"
     REFRESH_COOKIE_NAME = "refresh_token"
