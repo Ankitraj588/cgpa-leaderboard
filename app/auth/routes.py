@@ -73,7 +73,7 @@ def login():
     reg = reg_from_login_id(request.form.get("email"))
     password = request.form.get("pswd") or ""
 
-    user = db.execute("SELECT * FROM users WHERE lower(trim(reg)) = ?", reg) if reg else []
+    user = db.execute("SELECT * FROM users WHERE lower(reg) = ?", reg) if reg else []
 
     if not user or not check_password_hash(user[0]["password"], password):
         flash("Incorrect email or password")
@@ -97,7 +97,7 @@ def forgot():
 
     rows = []
     if allowed and reg:
-        rows = db.execute("SELECT reg, password FROM users WHERE lower(trim(reg)) = ?", reg)
+        rows = db.execute("SELECT reg, password FROM users WHERE lower(reg) = ?", reg)
 
     if rows:
         to = college_email(rows[0]["reg"])

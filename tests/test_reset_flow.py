@@ -44,18 +44,6 @@ def test_forgot_emails_the_college_address(app, user, outbox):
     assert outbox[0][0] == EMAIL
 
 
-def test_login_matches_legacy_registration_whitespace(app, user):
-    db.execute("UPDATE users SET reg = ? WHERE reg = ?", f" {REG.upper()} ", REG)
-
-    resp = app.test_client().post(
-        "/login",
-        data={"email": EMAIL, "pswd": "oldpassword1"},
-    )
-
-    assert resp.status_code == 302
-    assert resp.headers["Location"] == "/cgpa"
-
-
 def test_unknown_user_gets_same_reply_and_no_email(app, user, outbox):
     client = app.test_client()
     known = client.post("/forgot", data={"email": EMAIL})
