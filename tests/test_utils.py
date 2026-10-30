@@ -1,4 +1,12 @@
+from config import _db_url
 from app.utils import college_email, reg_from_login_id
+
+
+def test_db_url_forces_psycopg2():
+    assert _db_url("postgres://u:p@h/db") == "postgresql+psycopg2://u:p@h/db"
+    assert _db_url("postgresql://u:p@h/db?sslmode=require") == "postgresql+psycopg2://u:p@h/db?sslmode=require"
+    assert _db_url("postgresql+psycopg://u:p@h/db") == "postgresql+psycopg2://u:p@h/db"
+    assert _db_url("sqlite:///cgpa.db") == "sqlite:///cgpa.db"
 
 
 def test_college_email_formats_valid_registration():

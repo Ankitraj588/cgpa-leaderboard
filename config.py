@@ -2,9 +2,19 @@ import os
 from datetime import timedelta
 
 
+def _db_url(url):
+    """Normalise Postgres URLs to the psycopg2 driver we install."""
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://"):]
+    for prefix in ("postgresql://", "postgresql+psycopg://", "postgresql+psycopg2://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg2://" + url[len(prefix):]
+    return url
+
+
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY")
-    DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///cgpa.db")
+    DATABASE_URL = _db_url(os.environ.get("DATABASE_URL", "sqlite:///cgpa.db"))
 
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
     JWT_ALGORITHM = "HS256"
